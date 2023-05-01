@@ -1,0 +1,253 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/reader.css">
+        <style>
+            table{
+                border:1px solid black;
+    
+            }
+    
+        </style>
+    </head>
+
+    <body style="background-color: #fff1d2;" >
+
+        
+            <center><h1>Current Weather</h1></center>
+            
+            
+
+           <section class="vh-100" style="background-color: #fff1d2;">            
+            <div class="container py-5 h-200">
+
+              <div class="row d-flex justify-content-between align-items-center h-200 ">
+                <div class="col-md-8 col-lg-6 col-xl-4">
+          
+                  <div class="card" style="color: #4B515D; border-radius: 35px;">
+                    <div class="card-body p-4">
+          
+                      <div class="d-flex">
+                        <h6 class="flex-grow-1">{{city}},{{country}}</h6>
+                        <h6>{{date_today}}</h6>
+                      </div>
+          
+                      <div class="d-flex flex-column text-center mt-5 mb-4">
+                        <h6 class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> {{temperature}}°{{unit_symbol}} </h6>
+                        <span class="small" style="color: #868B94">{{weather_main}}</span>
+                      </div>
+          
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1" style="font-size: 1rem;">
+                          <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 40 km/h
+                            </span></div>
+                          <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84% </span>
+                          </div>
+                          <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h </span>
+                          </div>
+                          
+                        </div>
+                        <div>
+                          <img src="static/images/icons/n{{weather_icon}}.png"
+                            width="150px">
+                        </div>
+                      </div>
+          
+                    </div>
+                  </div>
+          
+                </div>
+
+                <!--Flex Box Right Side-->
+
+                <div class="col-md-4 col-lg-6 col-xl-8">
+          
+                  <div class="card" style="color: #4B515D; border-radius: 35px;">
+                    <div class="card-body p-4">
+          
+                      <div class="d-flex flex-column justify-content-start align-items-start mb-3">
+                        <span class="small" style="font-size: 14px; color: #1C2331;"> {{date_today}}</span>
+                        <span class="display-4 font-weight-bold" style="color: #1C2331;">{{time_now}}</span>
+                        
+                        <div class="d-flex flex-column justify-content-start align-items-center mt-5">
+                          <div class="d-flex flex-row justify-content-center align-items-start">
+                            <div class="d-flex flex-column align-items-center mr-2 border">
+                              <h6 class="mb-0">{{first_hour}}</h6>
+                              <img src="static/images/icons/n{{first_icon}}.png"
+                                width="50px">
+                              <span>{{first_temp}}°{{unit_symbol}}</span>
+                            </div>
+                            <div class="d-flex flex-column align-items-center mr-2 border">
+                              <h6 class="mb-0">{{second_hour}}</h6>
+                              <img src="static/images/icons/n{{second_icon}}.png"
+                                width="50px">
+                              <span>{{second_temp}}°{{unit_symbol}}</span>
+                            </div>
+                          </div>
+                          <div class="d-flex flex-row justify-content-center align-items-center mt-2">
+                            <div class="d-flex flex-column align-items-center border">
+                              <h6 class="mb-0">{{third_hour}}</h6>
+                              <img src="static/images/icons/n{{third_icon}}.png"
+                                width="50px">
+                              <span>{{third_temp}}°{{unit_symbol}}</span>
+                                
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+          
+                    </div>
+                  </div>
+          
+                </div>
+
+              </div>
+              
+              <!-- Flex Box Below -->
+              <div class="row d-flex justify-content-center align-items-center h-200" style="padding-top: 2rem;">
+                <div class="col-md-6 col-lg-8 col-xl-12">
+          
+                  <div class="card" style="color: #4B515D; border-radius: 35px;">
+                    <div class="card-body p-4">
+          
+                      <div class="d-flex">
+                        <h6 class="font-weight-bold mb-0 mr-4 ml-auto " style="color: #1C2331; font-size: 5rem;"> {{temperature}}°{{unit_symbol}} </h6>
+                        <h6>{{date_today}}</h6>
+                      </div>
+          
+                      <div class="d-flex flex-column text-center mt-5 mb-4">
+                        <h6 class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> {{temperature}}°{{unit_symbol}} </h6>
+                        <span class="small" style="color: #868B94">{{weather_main}}</span>
+                      </div>
+          
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1" style="font-size: 1rem;">
+                          <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 40 km/h
+                            </span></div>
+                          <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84% </span>
+                          </div>
+                          <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h </span>
+                          </div>
+                        </div>
+                        <div>
+                          <img src="https://openweathermap.org/img/w/{{weather_icon}}.png"
+                            width="100px">
+                        </div>
+                      </div>
+          
+                    </div>
+                  </div>
+          
+                </div>
+              </div>
+
+
+
+
+
+
+
+          
+            </div>
+
+
+          
+
+          </section>
+
+          <button id="accessibility-toggle" type="button">Toggle Accessibility Mode</button>
+        
+          <script>
+  
+              
+              $(document).ready(function() {
+  
+                  var isAccessibilityOn = false;
+  
+                  function highlightElement($element) {
+                  $element.addClass("accessibility-highlight");
+                  }
+  
+                  function unhighlightElement($element) {
+                  $element.removeClass("accessibility-highlight");
+                  }
+  
+                  function speakText($element) {
+                  var text = $element.clone()    // clone the element
+                      .children()                 // select all children
+                      .remove()                   // remove all children
+                      .end()                      // go back to original element
+                      .text();                    // get the text content
+                  
+                  var utterance = new SpeechSynthesisUtterance(text);
+                  speechSynthesis.speak(utterance);
+                  }
+  
+                  $(document).on("mouseenter", "*", function() {
+                  if (isAccessibilityOn) {
+                      highlightElement($(this));
+                  }
+                  });
+  
+                  $(document).on("mouseleave", "*", function() {
+                  if (isAccessibilityOn) {
+                      unhighlightElement($(this));
+                  }
+                  });
+  
+                  $(document).on("keydown", function(e) {
+                  if (e.keyCode === 32) {
+                      var $highlighted = $(".accessibility-highlight:hover");
+                      if ($highlighted.length > 0) {
+                      e.preventDefault();
+                      speakText($highlighted);
+                      // unhighlightElement($highlighted);
+                      // isAccessibilityOn = false;
+                      }
+                  }
+                  });
+  
+                  $("#accessibility-toggle").on("click", function() {
+                  isAccessibilityOn = !isAccessibilityOn;
+                  if (isAccessibilityOn) {
+                      speakText($(this));
+                      speakText("Accessibility mode turned on. Hover over an element and press space to read it.");
+                  } else {
+                      speechSynthesis.cancel();
+                      unhighlightElement($(".accessibility-highlight"));
+                      speakText("Accessibility mode turned off");
+                  }
+                  });
+  
+              });
+          </script>
+
+
+
+          
+
+
+          
+
+
+
+
+
+
+        
+
+
+          
+
+
+
+
+
+
+    </body>
+
+   
+
+</html>

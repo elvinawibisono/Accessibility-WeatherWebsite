@@ -1,0 +1,311 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Weather App</title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/reader.css">
+
+    </head>
+
+    <body style = "background-color : #fff1d2">
+
+        <!--Jquery script to get the selected text of the country to display in the table-->
+        <script>
+            $(document).ready(function(){
+                $('#country').on('change',function(){
+                    var countryName = $(this).find('option:selected').text();
+                    $('#selectedOption').val(countryName)
+                });
+            });
+        </script>
+
+        <div class="container mt-5 mb-5 d-flex justify-content-center">  
+            <div class="card px-1 py-4">
+                <div class="card-body">
+                    <center><h5 class="card-title mb-3">Weather Recommendation</h5></center>
+                    <h6 class="information mt-4">Please provide all the information below.</h6>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form action = "/load" method = "post">
+                                <div class="form-group">
+                                    <label for ="City">City:</label>
+                                    <input type="text" id="city" name="city" class="form-control" placeholder="Enter city..." required autofocus>
+
+                                </div>
+                            
+                        </div>
+                    </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Country:</label>
+                                            <select name ="country" id="country">
+                                                {% for i in country%}
+                                                <option value = {{i.Code}} data-text= {{i.Name}}>{{i.Name}}</option>
+                                                {%endfor%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="hidden" id="selectedOption" name="selectedOption">
+
+                                        <div class="form-group">
+
+                                            <label>Units: </label>
+                                            <select name ="unit" id ="unit">
+                                                <option value ="standard">Standard(Kelvin)</option>
+                                                <option value ="metric">Metric(Celcius)</option>
+                                                <option value="imperial">Imperial(Fahrenheit)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class = "form-group">
+
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Find Weather</button>
+                                </div>
+                            </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Speech to Text -->
+        <button id="accessibility-toggle" type="button">Toggle Accessibility Mode</button>
+        
+        <script>
+
+            
+            $(document).ready(function() {
+
+                var isAccessibilityOn = false;
+
+                function highlightElement($element) {
+                $element.addClass("accessibility-highlight");
+                }
+
+                function unhighlightElement($element) {
+                $element.removeClass("accessibility-highlight");
+                }
+
+                function speakText($element) {
+                var text = $element.clone()    // clone the element
+                    .children()                 // select all children
+                    .remove()                   // remove all children
+                    .end()                      // go back to original element
+                    .text();                    // get the text content
+                
+                var utterance = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(utterance);
+                }
+
+                $(document).on("mouseenter", "*", function() {
+                if (isAccessibilityOn) {
+                    highlightElement($(this));
+                }
+                });
+
+                $(document).on("mouseleave", "*", function() {
+                if (isAccessibilityOn) {
+                    unhighlightElement($(this));
+                }
+                });
+
+                $(document).on("keydown", function(e) {
+                if (e.keyCode === 32) {
+                    var $highlighted = $(".accessibility-highlight:hover");
+                    if ($highlighted.length > 0) {
+                    e.preventDefault();
+                    speakText($highlighted);
+                    // unhighlightElement($highlighted);
+                    // isAccessibilityOn = false;
+                    }
+                }
+                });
+
+                $("#accessibility-toggle").on("click", function() {
+                isAccessibilityOn = !isAccessibilityOn;
+                if (isAccessibilityOn) {
+                    speakText($(this));
+                    speakText("Accessibility mode turned on. Hover over an element and press space to read it.");
+                } else {
+                    speechSynthesis.cancel();
+                    unhighlightElement($(".accessibility-highlight"));
+                    speakText("Accessibility mode turned off");
+                }
+                });
+
+            });
+        </script>
+
+          
+
+
+
+        <!-- <script>
+            $(document).ready(function() {
+          
+              var isAccessibilityOn = false;
+          
+              function highlightElement($element) {
+                $element.addClass("accessibility-highlight");
+                if (isAccessibilityOn) {
+                  speakVisibleText($element);
+                }
+              }
+          
+              function unhighlightElement($element) {
+                $element.removeClass("accessibility-highlight");
+              }
+          
+              function speakVisibleText($element) {
+                var visibleText = getVisibleText($element);
+                if (visibleText) {
+                  var utterance = new SpeechSynthesisUtterance(visibleText);
+                  speechSynthesis.speak(utterance);
+                }
+              }
+          
+              function getVisibleText($element) {
+                var text = "";
+                $element.contents().each(function() {
+                  if (this.nodeType === Node.TEXT_NODE) {
+                    text += this.textContent;
+                  } else if ($(this).is(":visible")) {
+                    text += getVisibleText($(this));
+                  }
+                });
+                return text.trim();
+              }
+          
+              $(document).on("mouseenter", "*", function() {
+                if (isAccessibilityOn) {
+                  highlightElement($(this));
+                }
+              });
+          
+              $(document).on("mouseleave", "*", function() {
+                if (isAccessibilityOn) {
+                  unhighlightElement($(this));
+                }
+              });
+          
+              $(document).on("click keypress", "*", function(e) {
+                if (isAccessibilityOn && (e.type === "click" || e.keyCode === 32)) {
+                  speakVisibleText($(this));
+                }
+              });
+          
+              $("#accessibility-toggle").on("click", function() {
+                isAccessibilityOn = !isAccessibilityOn;
+                $("*").toggleClass("accessibility-highlight");
+                if (isAccessibilityOn) {
+                  speakText("Accessibility mode turned on.");
+                } else {
+                  speechSynthesis.cancel();
+                  speakText("Accessibility mode turned off.");
+                }
+              });
+          
+            });
+          </script>
+ -->
+
+
+        <!-- <script>
+            $(document).ready(function() {
+          
+              var isAccessibilityOn = false;
+          
+              function highlightElement($element) {
+                $element.addClass("accessibility-highlight");
+                if (isAccessibilityOn) {
+                  speakText($element.text());
+                }
+              }
+          
+              function unhighlightElement($element) {
+                $element.removeClass("accessibility-highlight");
+              }
+          
+              function speakText(text) {
+                var visibleText = $(text).text();
+                var utterance = new SpeechSynthesisUtterance(visibleText);
+                speechSynthesis.speak(utterance);
+              }
+          
+              $(document).on("mouseenter", "*", function() {
+                if (isAccessibilityOn) {
+                  highlightElement($(this));
+                }
+              });
+          
+              $(document).on("mouseleave", "*", function() {
+                if (isAccessibilityOn) {
+                  unhighlightElement($(this));
+                }
+              });
+          
+              $(document).on("click keypress", "*", function(e) {
+                if (isAccessibilityOn && (e.type === "click" || e.keyCode === 32)) {
+                  speakText($(this).text());
+                }
+              });
+          
+              $("#accessibility-toggle").on("click", function() {
+                isAccessibilityOn = !isAccessibilityOn;
+                $("*").toggleClass("accessibility-highlight");
+                if (isAccessibilityOn) {
+                  speakText("Accessibility mode turned on.");
+                } else {
+                  speechSynthesis.cancel();
+                  speakText("Accessibility mode turned off.");
+                }
+              });
+          
+            });
+          </script> -->
+
+
+
+
+        <!-- <script>
+            $(document).ready(function(){
+        
+                // Get the text of the selected option when the country dropdown list changes
+                $('#country').on('change', function(){
+                    var countryName = $(this).find('option:selected').text();
+                    $('#selectedOption').val(countryName);
+                });
+        
+                // Add a button to turn on text-to-speech
+                var synth = window.speechSynthesis;
+                var voices = synth.getVoices();
+        
+                var button = $('<button>', {
+                    text: 'Text to Speech',
+                    click: function() {
+                        var text = $('#selectedOption').val();
+                        var utterance = new SpeechSynthesisUtterance(text);
+                        utterance.voice = voices[0];
+                        synth.speak(utterance);
+                    }
+                });
+        
+                $('#country').after(button);
+            });
+        </script>  -->
+        
+       
+
+    </body>
+
+   
+
+</html>

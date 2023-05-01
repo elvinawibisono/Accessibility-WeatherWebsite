@@ -1,0 +1,8 @@
+.highlight{
+    outline: 3px solid red;
+}
+
+.accessibility-highlight {
+    outline: 3px solid red;
+    cursor: pointer;
+  }
