@@ -4,9 +4,14 @@
         <title>Weather App</title>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    
+        <script src="//code.jquery.com/jquery.min.js"></script>
+      
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/css/reader.css">
         <link rel="stylesheet" href="static/css/magnifier.css">
+        <link rel="stylesheet" href="static/css/keyboard.css">
 
     </head>
 
@@ -83,8 +88,8 @@
           <form action="/action_page.php" class="form-container">
             <h1>Accessibility Features</h1>
 
-            <button id="Contrast" type="button" class = "btn" >Contrast</button>
-            <button id="Keyboard" type="button" class = "btn" >Keyboard</button>
+            <button aria-label="Add Contrast" id="accessibility-contrast" class="js-acessibility" onclick="accessibility()">Add Contrast</button>
+            <button id="Keyboard" type="button" class = "btn" onclick ="keyboard()" >Keyboard</button>
             <button id="Magnification" type="button" class = "btn" onclick="magnifier()">Magnification</button>
             <button id="accessibility-toggle" type="button" class = "btn" onclick="textToSpeech()">Text-To-Speech</button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
@@ -99,6 +104,13 @@
           
           function closeForm() {
             document.getElementById("myForm").style.display = "none";
+          }
+
+          function accessibility(){
+            $(document).ready(function() {
+              accessibilityButtons();
+
+            })          
           }
 
             // text to speech 
@@ -236,9 +248,7 @@
                           $("body").css("transform", "");
                       }
 
-
                   } 
-
 
               });
 
@@ -327,8 +337,6 @@
                               $('.magnified').css('object-fit', 'contain'); 
                               $('#mydiv').css('height', '75%')
 
-
-
                           }
 
                           else if($(element).attr("src")){
@@ -372,7 +380,329 @@
             
           }
 
+
+          function keyboard(){
+
+            $(document).ready(function(){
+
+              var state = "none";
+              var x = 0; 
+              var y = 0;
+
+
+              var inputBox;
+              var upperCase; 
+              var shift; 
+              var keyScan; 
+
+
+              $("body").append("<div id = linex class = 'linex'></div>"); 
+              $("body").append("<div id = liney class = 'liney'></div>"); 
+              //$('button.down').show(); 
+
+              //trigger a click using the scan bars 
+
+              function simulateClick(element){
+                  if(!element) return; 
+                  var dispatchEvent = function(elt, name){
+                      var clickEvent = document.createEvent('MouseEvents')
+                      clickEvent.initEvent(name, true, true); 
+                      elt.dispatchEvent(clickEvent); 
+                  }; 
+                  dispatchEvent(element, 'mouseover')
+                  dispatchEvent(element, 'mousedown')
+                  dispatchEvent(element, 'click')
+                  dispatchEvent(element, 'mouseup')
+              }; 
+
+              //scan bars to select item on page 
+
+              setInterval(function(){
+                  paint();      
+                  
+              }, 10); 
+
+              function paint(){
+                  if(state == "horizontal_scanning"){
+
+                      document.getElementById("linex").style.width = (x + "px"); 
+                      x = x + 1; 
+
+                  }else if(state == "vertical_scanning"){
+                  
+                      document.getElementById("liney").style.height = (y + "px"); 
+                      y = y + 1
+              
+                  }else{
+
+                      //do nothing
+
+                  }
+              }
+
+              $(document).keydown(function(e){
+                  if(e.key == " "){
+
+                      keyScan = true; 
+
+                      if (state == 'none'){
+                          state = "horizontal_scanning";
+
+                      }
+                      else if (state == "horizontal_scanning"){
+                          state = "vertical_scanning"
+
+                      }
+                      else {
+                  
+                        document.getElementById("linex").style.width = ("0px");
+                        document.getElementById("liney").style.height = ("0px");
+                        var click = document.elementFromPoint(x,y); 
+                        simulateClick(click); 
+
+                        //console.log(click);
+
+                        if($(click).is("input[type = 'text'], textarea")){
+                            inputBox = click; 
+
+                        }
+
+                        state = "none";
+                        x = 0; 
+                        y = 0; 
+
+                      } 
+
+                      if(keyboardState == "ON"){
+                          useKeyboard(inputBox,click); 
+                  
+                      }
+
+                      e.stopPropagation(); 
+                      e.preventDefault(); 
+
+                    // console.log(inputBox);
+                      //console.log(keyboardState);
+                      //console.log(inputBox); 
+
+                      keyScan = false; 
+                      console.log("keydown called")
+                      
+                      return false; 
+
+                      
+                  }
+
+
+              });
+
+              /*
+              var boxPressed; 
+              document.addEventListener("click", function(e){
+                  console.log("clicked called")
+                  var element = $(e.target); 
+
+                  if($(element).is("input[type = 'text'], textarea")){
+
+                      boxPressed = element; 
+
+                  }
+
+                  if(element.hasClass("key")){
+                      useKeyboard(boxPressed,element) 
+                  }
+
+                  console.log(element); 
+                  console.log(boxPressed); 
+              });
+              */
+
+              //scroll button
+              //up and down button 
+              var upButton= $("<button type = 'button' id= 'up' class = 'up'>^</button>"); 
+              var downButton= $("<button type = 'button' id = 'down' class = 'down'>V</button>"); 
+
+              var scrollPercent = document.body.scrollHeight/10; 
+
+              upButton.click(function(){
+
+                  $('html,body').animate({
+                      scrollTop: $(document).scrollTop()-scrollPercent
+                  }, 1000); 
+
+              }); 
+
+              downButton.on('click', function(){
+
+                  $('html,body').animate({
+                      scrollTop: $(document).scrollTop()+scrollPercent 
+                  }, 1000); 
+
+              })
+
+              $("body").append(upButton);
+              $("body").append(downButton); 
+
+              //add keyboard
+              var keyboardbtn = $('<button type = "button" id = "keyboardbtn" class="keyboardbtn">Keyboard</button>')
+              $("body").append('<div id= "spaceForKeyboard" class="spaceForKeyboard"></div>')
+
+              var keyboardState = "OFF";
+
+              keyboardbtn.click(function(){
+
+                  console.log("called")
+
+                  if(keyboardState == "OFF"){
+
+                      $("#spaceForKeyboard").load("https://sarahmorrisonsmith.com/accessibility/keyboard.html");
+
+                      keyboardState="ON";
+                  
+                      if(!inputBox){
+                          console.log("No selected text box");
+                      }
+                      
+                  }
+                  else{
+                      $("#spaceForKeyboard").empty();
+                      keyboardState="OFF";
+                  }
+                  
+              }); 
+
+
+              $("body").append(keyboardbtn); 
+
+              function useKeyboard(inputBox, element){
+
+                  var spaceClass = $(element).hasClass("key space")
+                  var input = $(element).text();
+
+                  input = $.trim(input);         
+                  
+                  //inputs are letters 
+                  if(input.length == 1){
+                      if(upperCase || shift){
+                          $(inputBox).val($(inputBox).val()+input); 
+                          shift = false; 
+                      }
+                      else{
+                          input = input.toLowerCase(); 
+                          $(inputBox).val($(inputBox).val()+input);
+                      }
+                  }
+
+                  //capslock
+                  else if(input == "CapsLock"){
+                      if(upperCase){
+                      
+
+                          upperCase = false;
+                      }
+
+                      else{
+                          upperCase = true; 
+                      }          
+                  }
+
+                  
+                  //inputs are dual key 
+
+                  
+                  
+                  else if(input.length == 2){
+
+                      if(shift){
+
+                          input = input.charAt(0);
+                          $(inputBox).val($(inputBox).val()+input); 
+                          shift = false; 
+
+                      }
+                      else{
+
+                          shift = true;
+                          input = input.charAt(1);
+                          $(inputBox).val($(inputBox).val()+input); 
+                          shift = false; 
+                          
+
+                      }    
+
+                  }
+                  
+                  
+                  
+                  //backspace
+                  else if(input == "Backspace"){
+                      $(inputBox).val($(inputBox).val().slice(0,-1)); 
+                      
+                  }
+
+                  //enter
+                  else if(input == "Enter"){ 
+
+                      input = "\n"; 
+                      $(inputBox).val($(inputBox).val() + input);
+
+                  }
+                  
+
+                  //spacebar 
+                  //works only if the keyboard is pressed manually with a mouse
+                  //does not work if the keyboard is pressed using space/scan bar lines 
+                  
+                  if(spaceClass == true && input.length == 0){
+                      console.log("called keyboard space")
+
+                      input = " ";
+                      $(inputBox).val($(inputBox).val() + input);
+                      
+                  }
+                  
+                  //tab
+                  if(input == "Tab"){
+
+                      input = "    "; 
+                      $(inputBox).val($(inputBox).val()+input);
+
+                  }
+                  
+                  //shift 
+                  else if (input == "Shift"){ 
+
+                      if(shift){
+
+                          upperCase = false; 
+                          shift = false;           
+                      }
+
+                      else{
+                          
+                          upperCase = true;
+                          shift = true;        
+                          upperCase = false; 
+
+                      }
+                  }
+
+                  
+
+              }
+
+              //export{useKeyboard}; 
+
+
+              });
+
+
+
+          }
+
         </script>
+
+
 
        
 

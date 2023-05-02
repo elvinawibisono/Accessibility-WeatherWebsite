@@ -1,0 +1,72 @@
+div.linex{
+position:fixed;
+border: 4px solid green;
+height: 100%;
+top: 0px;
+left:0px;
+margin: -1px;
+margin-top:-4px;
+z-index:1;
+}
+
+div.liney {
+position:fixed;
+border: 4px solid red;
+width: 100%;
+top: 0px;
+right:0px;
+margin-top:-4px;
+margin-right:-4px;
+z-index:1;
+}
+
+button.up {
+  position:absolute;
+  top:83%;
+  left:5%;
+  background-color: blue;
+  border: none;
+  color: white;
+  height:40px;
+  width:40px;
+  text-align: center;
+  font-weight:bold;
+  display: inline-block;
+  font-size: 20px;
+}
+button.down {
+  position:absolute;
+  top:90%;
+  left:5%;
+  background-color: blue;
+  border: none;
+  color: white;
+  height:40px;
+  width:40px;
+  text-align: center;
+  font-weight:bold;
+  display: inline-block;
+  font-size: 20px;
+}
+
+button.keyboardbtn {
+  position:absolute;
+  top:91.5%;
+  left:12%;
+  background-color: blue;
+  border: none;
+  color: white;
+  height:30px;
+  width:85px;
+  text-align: center;
+  font-weight:bold;
+  display: inline-block;
+  font-size: 15px;
+
+}
+
+div.spaceForKeyboard {
+  position:fixed;
+  top:5%;
+  left:10%;
+}
