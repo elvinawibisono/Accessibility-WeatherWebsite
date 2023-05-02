@@ -73,7 +73,7 @@ def weather():
     elif unit == 'metric':
         temp_conv = int(round((9*temperature)/5+32))
     elif unit == 'imperial':
-        temp_conv = temp
+        temp_conv = temperature
 
     print(temp_conv)
     
