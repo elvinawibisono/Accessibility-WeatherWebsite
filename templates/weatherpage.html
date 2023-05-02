@@ -4,6 +4,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/css/reader.css">
+        <link rel="stylesheet" href="static/css/magnifier.css">
         <style>
             table{
                 border:1px solid black;
@@ -157,71 +158,302 @@
 
           </section>
 
-          <button id="accessibility-toggle" type="button">Toggle Accessibility Mode</button>
-        
-          <script>
+          <button class="open-button" onclick="openForm()">Accessibility</button>
+
+          <div class="form-popup" id="myForm">
+            <form action="/action_page.php" class="form-container">
+              <h1>Accessibility Features</h1>
   
-              
+              <button id="Contrast" type="button" class = "btn" >Contrast</button>
+              <button id="Keyboard" type="button" class = "btn" >Keyboard</button>
+              <button id="Magnification" type="button" class = "btn" onclick="magnifier()">Magnification</button>
+              <button id="accessibility-toggle" type="button" class = "btn" onclick="textToSpeech()">Text-To-Speech</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
+  
+          <!--Pop Up botton for Accessibility -->
+          <script>
+            function openForm() {
+              document.getElementById("myForm").style.display = "block";
+            }
+            
+            function closeForm() {
+              document.getElementById("myForm").style.display = "none";
+            }
+            
+              // text to speech 
+            function textToSpeech(){
+  
               $(document).ready(function() {
   
-                  var isAccessibilityOn = false;
+    
+                var isAccessibilityOn = false;
   
-                  function highlightElement($element) {
-                  $element.addClass("accessibility-highlight");
+                function highlightElement($element) {
+                    if ($element.is("img, p, span, h1, h2, h3, h4, h5, h6, a, label, button")) {
+                        $element.addClass("accessibility-highlight");
+                    }
+                }
+  
+                function unhighlightElement($element) {
+                    $element.removeClass("accessibility-highlight");
+                }
+  
+                function speakText($element, text) {
+                  if (!text) {
+                      text = $element.clone()
+                          .children()
+                          .remove()
+                          .end()
+                          .text();
                   }
   
-                  function unhighlightElement($element) {
-                  $element.removeClass("accessibility-highlight");
-                  }
+                  if (isAccessibilityOn) { // Check if the accessibility mode is turned on
+                      var utterance = new SpeechSynthesisUtterance(text);
+                      utterance.onend = function() {
+                          if (callback) {
+                              callback();
+                          }
+                      };
+                      speechSynthesis.speak(utterance);
+                    }
+                }
   
-                  function speakText($element) {
-                  var text = $element.clone()    // clone the element
-                      .children()                 // select all children
-                      .remove()                   // remove all children
-                      .end()                      // go back to original element
-                      .text();                    // get the text content
-                  
-                  var utterance = new SpeechSynthesisUtterance(text);
-                  speechSynthesis.speak(utterance);
-                  }
   
-                  $(document).on("mouseenter", "*", function() {
-                  if (isAccessibilityOn) {
-                      highlightElement($(this));
-                  }
+                  $(document).on("change", "select", function() {
+                      if (isAccessibilityOn) {
+                          speakText($(this), $(this).find("option:selected").text());
+                      }
                   });
   
-                  $(document).on("mouseleave", "*", function() {
-                  if (isAccessibilityOn) {
-                      unhighlightElement($(this));
-                  }
+  
+                  $(document).on("mouseenter", "img, p, span, h1, h2, h3, h4, h5, h6, a, label, button", function() {
+                      if (isAccessibilityOn) {
+                          highlightElement($(this));
+                      }
+                  });
+  
+                  $(document).on("mouseleave", "img, p, span, h1, h2, h3, h4, h5, h6, a, label, button", function() {
+                      if (isAccessibilityOn) {
+                          unhighlightElement($(this));
+                      }
                   });
   
                   $(document).on("keydown", function(e) {
-                  if (e.keyCode === 32) {
-                      var $highlighted = $(".accessibility-highlight:hover");
-                      if ($highlighted.length > 0) {
-                      e.preventDefault();
-                      speakText($highlighted);
-                      // unhighlightElement($highlighted);
-                      // isAccessibilityOn = false;
+                      if (e.keyCode === 32 && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
+                          var $highlighted = $(".accessibility-highlight:hover");
+                          if ($highlighted.length > 0) {
+                              speakText($highlighted);
+                          }
                       }
-                  }
                   });
   
                   $("#accessibility-toggle").on("click", function() {
-                  isAccessibilityOn = !isAccessibilityOn;
-                  if (isAccessibilityOn) {
-                      speakText($(this));
-                      speakText("Accessibility mode turned on. Hover over an element and press space to read it.");
-                  } else {
-                      speechSynthesis.cancel();
-                      unhighlightElement($(".accessibility-highlight"));
-                      speakText("Accessibility mode turned off");
-                  }
-                  });
+                      isAccessibilityOn = !isAccessibilityOn;
+                      if (isAccessibilityOn) {
+                        speakText($(this), "Accessibility mode turned on. Hover over a text or image element and press space to read it.", function() {
+                        highlightElement($(".accessibility-highlight"));
+                        });
+                      } else {
+                        speechSynthesis.cancel();
+                        unhighlightElement($(".accessibility-highlight"));
+                        speakText($(this), "Accessibility mode turned off", function() {
+                          $(".temp-element").remove();
+                        });
+                      }
   
+                  });
+                
               });
+              
+            }
+
+
+            // Debug this
+              // magnification
+            function magnifier(){
+
+              $(document).ready(function(){
+
+                var zoom = 1.0; 
+                var body_width = document.body.clientWidth; 
+                var body_height = document.body.clientHeight; 
+
+                document.addEventListener('keydown', function(e){
+                    
+                    //Browser Zoom 
+                    if (e.key == "-"){
+                        zoom -= 0.1; 
+                        zoomString = zoom.toFixed(1).toString(); 
+                        document.body.style.zoom = zoomString; 
+                    }
+                    else if(e.key == "="){
+                        zoom += 0.1; //change it to string
+                        zoomString = zoom.toFixed(1).toString(); 
+                        document.body.style.zoom = zoomString; 
+
+                    }
+
+                    if (e.key == "+" || e.key == "_"){
+                        $("body").css("position","relative");
+                        //Graphical Zoom
+                        if (e.key == "+"){
+                            zoom += 0.1; 
+
+                        }
+                        else if(e.key == "_"){
+                            zoom -= 0.1; 
+
+                        }
+                        var newWidth = zoom.toFixed(1) * body_width; 
+                        var newHeight = zoom.toFixed(1) * body_height; 
+
+                        var pixel_width = (newWidth-body_width)/2; 
+                        var pixel_height = (newHeight-body_height)/2; 
+                        $("body").css("left", pixel_width.toString() + "px"); 
+                        $("body").css("top", pixel_height.toString() + "px"); 
+                        $("body").css("transform", 'scale(${zoom.toFixed(1)}'); 
+
+                        if(zoom.toFixed()==1.0){
+                            $("body").css("transform", "");
+                        }
+
+
+                    } 
+
+
+                });
+
+
+                var oldx = 0; 
+                var oldy = 0; 
+
+                document.addEventListener('mousemove', e=>{
+
+                    var x= e.clientX
+                    var scrollLeftValue = $(document).scrollLeft(); 
+
+                    // if the coo relative to the window seem are less than 100px
+                    //and if the coo of the old move are grater than the coo of the new move
+                    // and if the coo relative to the window are not equal to coo of the move
+
+                    if((x<=100) & (oldx>e.pageX) &(x !=e.pageX)){
+                        $(document).scrollLeft(scrollLeftValue -10); 
+
+                    }
+
+                    //if the window width minus the coo relative to the window are less than 100 
+                    // and if the coo of the old moce are less than the coo of new move
+                    //scroll other way 
+                    if(($(window).width() -x) <100 & (oldx <e.pageX)){
+                        $(document).scrollLeft(scrollLeftValue +10);
+                    }
+
+                    oldx = e.pageX
+                    oldy = e.pageY
+
+                }); 
+
+
+                $("*:not(body)").on("mouseenter", function(ev){
+
+                    //may want to remove leftover highlights vefore highlighting a new 
+                    $(".highlight").removeClass("highlight")
+                    //when a mouse enters an element
+                    $(this).addClass("highlight")
+
+                    //to prevent multiple elements from being highlighted 
+                    //we will only highlight the first element so we need to call the following
+                    //to stop hovering on a child from highloghting the parent
+                    ev.stopPropagation(); 
+
+                    //set the element variable
+                    element = this; 
+                });
+
+                $("*:not(body)").on("mouseleave", function(ev){
+                    $(this).removeClass("highlight"); 
+
+                    $(".highlight").removeClass("highlight")
+
+                });
+
+                document.addEventListener("keydown", function(e){
+
+                    if(e.code == ""|| e.code == "Space"){
+                        //need to stop the page from scrolling down when we press space
+                        if(e.stopPropagation){
+                            e.stopPropagation(); 
+                            e.preventDefault(); 
+                        }
+
+                        //if text is highighted and there is no refactored window open 
+                        //make a refactored window
+                        //otherwise the window is open so close it
+
+                        //check if div exist
+                        if($(element).hasClass("highlight") & $('#mydiv').length == 0){
+                            //var newImage = new Image(); 
+
+                            $("body").append($("<div id = 'mydiv'></div>"))
+
+
+                            var imgsrc = $(element).attr("src"); 
+                            var imgalt = $(element).attr("alt"); 
+
+                            if($(element).attr("alt") && $(element).attr("src")){
+                                
+
+                                $('#mydiv').append($("<img class = 'magnified' alt=" + imgalt + " src=" + imgsrc+">")); 
+                                $('.magnified').css({'width': '100%', 'height': '100%'})
+                                $('.magnified').css('object-fit', 'contain'); 
+                                $('#mydiv').css('height', '75%')
+
+
+
+                            }
+
+                            else if($(element).attr("src")){
+                                $('#mydiv').append($("<img class = 'magnified' src =" + imgsrc+">")); 
+                        
+                                $('.magnified').css({'width': '100%', 'height': '100%'})
+                                $('.magnified').css('object-fit', 'contain'); 
+                                $('#mydiv').css('height', '75%')
+                            }
+
+                            //else the element is not an image and it's stext 
+                            else{
+                                //write the text to the div
+                                $('#mydiv').html($(".highlight").text()); 
+                                //might want to add background color for text 
+                                $('#mydiv').css('background-color', 'white')
+                                $('#mydiv').css('border-radius', "25px")
+                                $('#mydiv').css('border', '1px solid black')
+                                $('mydiv').css('padding', "25px")
+                            }
+
+
+                        }
+                        //else remove 
+                        else{
+                            $("#mydiv").html("")
+                            $("#mydiv").remove()
+
+                        }
+                    }
+                    else{
+                        $(".highlight").removeClass("highlight")
+                    }
+                });
+
+
+
+              });
+
+
+              }
+  
           </script>
 
 
