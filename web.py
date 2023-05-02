@@ -90,15 +90,16 @@ def weather():
         clothing = "shorts"
 
     
-    if clothing is "fleece": 
+    clothing_comment = " "
+    if clothing == "fleece": 
         clothing_comment = "wear something long sleeved like a hoodie"
-    elif clothing is "winter jacket": 
+    elif clothing == "winter jacket": 
         clothing_comment= "It's really cold, wear your winter jacket, gloves, mufflers to keep you warm"
-    elif clothing is "light to medium coat":
+    elif clothing == "light to medium coat":
         clothing_comment= "layering really helps in this kind of weather"
-    elif clothing is "short sleeves": 
-        clothing_comment = "it's a warm day today wear whatever you wanr!"
-    elif clothing_comment is "shorts": 
+    elif clothing == "short sleeves": 
+        clothing_comment = "it's a warm day today wear whatever you want!"
+    elif clothing == "shorts": 
         clothing_comment ="it's so hot today wear something light"
 
     #get an hourly forecast
