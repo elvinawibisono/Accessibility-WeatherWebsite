@@ -89,6 +89,18 @@ def weather():
     elif temp_conv > 80: 
         clothing = "shorts"
 
+    
+    if clothing is "fleece": 
+        clothing_comment = "wear something long sleeved like a hoodie"
+    elif clothing is "winter jacket": 
+        clothing_comment= "It's really cold, wear your winter jacket, gloves, mufflers to keep you warm"
+    elif clothing is "light to medium coat":
+        clothing_comment= "layering really helps in this kind of weather"
+    elif clothing is "short sleeves": 
+        clothing_comment = "it's a warm day today wear whatever you wanr!"
+    elif clothing_comment is "shorts": 
+        clothing_comment ="it's so hot today wear something light"
+
     #get an hourly forecast
     forecast_url = "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&units="+unit+"&appid=" + "ec48f3afcee64a65c1124ce499a2eb08"
     response_for = requests.get(forecast_url)
@@ -201,16 +213,22 @@ def weather():
     uv = uvi_data['result']['uv']
     print(uv)
 
+    uv = round(uv)
+
+    uv_status = ""
+
     if uv in range (0,3): 
-        uv_status = "low"
+        uv_status = "low: Apply sunscreen"
     if uv in range (3,6): 
-        uv_status = "moderate"
+        uv_status = "moderate: Don't forget to wear sunscreen!"
     if uv in range(6,8):
-        uv_status = "high"
+        uv_status = "high: Apply Sunscreen and Wear a Hat or Sunglasses!"
     if uv in range(8,11): 
-        uv_status = "very high"
+        uv_status = "very high: Wear a protective layer and Apply Sunscreen before going out"
     if uv > 11: 
-        uv_status = "extreme"
+        uv_status = "extreme : Avoid the Sun"
+
+    print(uv_status)
     
 
     #get today's date 
@@ -226,7 +244,8 @@ def weather():
     return render_template('weatherpage.html', unit_symbol=unit_symbol, city = city, country = country, temperature=temperature, humidity=humidity, 
     wind_speed=wind_speed, weather_main=weather_main, weather_desc=weather_desc, weather_icon=weather_icon, clothing =clothing, prob_percip=prob_percip,
     comment=comment, uv=uv, date_today=date_today, time_now=time_now ,first_hour = first_hour, first_icon= first_icon, first_temp = first_temp, 
-    second_hour = second_hour, second_icon = second_icon, second_temp = second_temp, third_hour=third_hour, third_icon = third_icon, third_temp=third_temp )
+    second_hour = second_hour, second_icon = second_icon, second_temp = second_temp, third_hour=third_hour, third_icon = third_icon, third_temp=third_temp, uv_status=uv_status, 
+    clothing_comment=clothing_comment )
 
        
 

@@ -87,12 +87,10 @@
         <div class="form-popup" id="myForm">
           <form action="/action_page.php" class="form-container">
             <h1>Accessibility Features</h1>
-
-            <button aria-label="Add Contrast" id="accessibility-contrast" class="js-acessibility" onclick="accessibility()">Add Contrast</button>
-            <button id="Keyboard" type="button" class = "btn" onclick ="keyboard()" >Keyboard</button>
-            <button id="Magnification" type="button" class = "btn" onclick="magnifier()">Magnification</button>
-            <button id="accessibility-toggle" type="button" class = "btn" onclick="textToSpeech()">Text-To-Speech</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            <button aria-label="One Click" id="One Click" type="button" class = "btn" onclick ="keyboard()" >One Click</button>
+            <button aria-label= "Magnification" id="Magnification" type="button" class = "btn" onclick="magnifier()">Magnification</button>
+            <button aria-label = "Text-To-Speech" id="accessibility-toggle" type="button" class = "btn" onclick="textToSpeech()">Text-To-Speech</button>
+            <button aria-label ="Close" id= "Close" type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
         </div>
 
@@ -104,13 +102,20 @@
           
           function closeForm() {
             document.getElementById("myForm").style.display = "none";
-          }
 
-          function accessibility(){
-            $(document).ready(function() {
-              accessibilityButtons();
+            const closeButton = document.getElementById("close-button");
+            // add a click event listener to the close button
+            closeButton.addEventListener("click", function() {
+              // disable accessibility mode
+              document.getElementById("accessibility-toggle").checked = false;
+              // remove highlight styles from all elements
+              speechSynthesis.cancel();
+              const highlightedElements = document.querySelectorAll(".highlight");
+              highlightedElements.forEach(function(element) {
+                element.classList.remove("highlight");
+              });
+            });
 
-            })          
           }
 
             // text to speech 
@@ -152,9 +157,10 @@
               }
 
 
-                $(document).on("change", "select", function() {
+                $(document).on("change", "select", function(e) {
                     if (isAccessibilityOn) {
                         speakText($(this), $(this).find("option:selected").text());
+                        e.stopImmediatePropagation();
                     }
                 });
 
@@ -176,15 +182,19 @@
                         var $highlighted = $(".accessibility-highlight:hover");
                         if ($highlighted.length > 0) {
                             speakText($highlighted);
+                            e.stopImmediatePropagation();
+                            e.stopPropagation(); 
+                            e.preventDefault(); 
                         }
                     }
                 });
 
-                $("#accessibility-toggle").on("click", function() {
+                $("#accessibility-toggle").on("click", function(e) {
                     isAccessibilityOn = !isAccessibilityOn;
                     if (isAccessibilityOn) {
                       speakText($(this), "Accessibility mode turned on. Hover over a text or image element and press space to read it.", function() {
-                      highlightElement($(".accessibility-highlight"));
+                        e.stopImmediatePropagation();
+                        highlightElement($(".accessibility-highlight"));
                       });
                     } else {
                       speechSynthesis.cancel();
@@ -460,33 +470,17 @@
                         var click = document.elementFromPoint(x,y); 
                         simulateClick(click); 
 
-                        //console.log(click);
-
-                        if($(click).is("input[type = 'text'], textarea")){
-                            inputBox = click; 
-
-                        }
-
                         state = "none";
                         x = 0; 
                         y = 0; 
 
                       } 
 
-                      if(keyboardState == "ON"){
-                          useKeyboard(inputBox,click); 
-                  
-                      }
+                      //
 
                       e.stopPropagation(); 
                       e.preventDefault(); 
 
-                    // console.log(inputBox);
-                      //console.log(keyboardState);
-                      //console.log(inputBox); 
-
-                      keyScan = false; 
-                      console.log("keydown called")
                       
                       return false; 
 
@@ -496,202 +490,6 @@
 
               });
 
-              /*
-              var boxPressed; 
-              document.addEventListener("click", function(e){
-                  console.log("clicked called")
-                  var element = $(e.target); 
-
-                  if($(element).is("input[type = 'text'], textarea")){
-
-                      boxPressed = element; 
-
-                  }
-
-                  if(element.hasClass("key")){
-                      useKeyboard(boxPressed,element) 
-                  }
-
-                  console.log(element); 
-                  console.log(boxPressed); 
-              });
-              */
-
-              //scroll button
-              //up and down button 
-              var upButton= $("<button type = 'button' id= 'up' class = 'up'>^</button>"); 
-              var downButton= $("<button type = 'button' id = 'down' class = 'down'>V</button>"); 
-
-              var scrollPercent = document.body.scrollHeight/10; 
-
-              upButton.click(function(){
-
-                  $('html,body').animate({
-                      scrollTop: $(document).scrollTop()-scrollPercent
-                  }, 1000); 
-
-              }); 
-
-              downButton.on('click', function(){
-
-                  $('html,body').animate({
-                      scrollTop: $(document).scrollTop()+scrollPercent 
-                  }, 1000); 
-
-              })
-
-              $("body").append(upButton);
-              $("body").append(downButton); 
-
-              //add keyboard
-              var keyboardbtn = $('<button type = "button" id = "keyboardbtn" class="keyboardbtn">Keyboard</button>')
-              $("body").append('<div id= "spaceForKeyboard" class="spaceForKeyboard"></div>')
-
-              var keyboardState = "OFF";
-
-              keyboardbtn.click(function(){
-
-                  console.log("called")
-
-                  if(keyboardState == "OFF"){
-
-                      $("#spaceForKeyboard").load("https://sarahmorrisonsmith.com/accessibility/keyboard.html");
-
-                      keyboardState="ON";
-                  
-                      if(!inputBox){
-                          console.log("No selected text box");
-                      }
-                      
-                  }
-                  else{
-                      $("#spaceForKeyboard").empty();
-                      keyboardState="OFF";
-                  }
-                  
-              }); 
-
-
-              $("body").append(keyboardbtn); 
-
-              function useKeyboard(inputBox, element){
-
-                  var spaceClass = $(element).hasClass("key space")
-                  var input = $(element).text();
-
-                  input = $.trim(input);         
-                  
-                  //inputs are letters 
-                  if(input.length == 1){
-                      if(upperCase || shift){
-                          $(inputBox).val($(inputBox).val()+input); 
-                          shift = false; 
-                      }
-                      else{
-                          input = input.toLowerCase(); 
-                          $(inputBox).val($(inputBox).val()+input);
-                      }
-                  }
-
-                  //capslock
-                  else if(input == "CapsLock"){
-                      if(upperCase){
-                      
-
-                          upperCase = false;
-                      }
-
-                      else{
-                          upperCase = true; 
-                      }          
-                  }
-
-                  
-                  //inputs are dual key 
-
-                  
-                  
-                  else if(input.length == 2){
-
-                      if(shift){
-
-                          input = input.charAt(0);
-                          $(inputBox).val($(inputBox).val()+input); 
-                          shift = false; 
-
-                      }
-                      else{
-
-                          shift = true;
-                          input = input.charAt(1);
-                          $(inputBox).val($(inputBox).val()+input); 
-                          shift = false; 
-                          
-
-                      }    
-
-                  }
-                  
-                  
-                  
-                  //backspace
-                  else if(input == "Backspace"){
-                      $(inputBox).val($(inputBox).val().slice(0,-1)); 
-                      
-                  }
-
-                  //enter
-                  else if(input == "Enter"){ 
-
-                      input = "\n"; 
-                      $(inputBox).val($(inputBox).val() + input);
-
-                  }
-                  
-
-                  //spacebar 
-                  //works only if the keyboard is pressed manually with a mouse
-                  //does not work if the keyboard is pressed using space/scan bar lines 
-                  
-                  if(spaceClass == true && input.length == 0){
-                      console.log("called keyboard space")
-
-                      input = " ";
-                      $(inputBox).val($(inputBox).val() + input);
-                      
-                  }
-                  
-                  //tab
-                  if(input == "Tab"){
-
-                      input = "    "; 
-                      $(inputBox).val($(inputBox).val()+input);
-
-                  }
-                  
-                  //shift 
-                  else if (input == "Shift"){ 
-
-                      if(shift){
-
-                          upperCase = false; 
-                          shift = false;           
-                      }
-
-                      else{
-                          
-                          upperCase = true;
-                          shift = true;        
-                          upperCase = false; 
-
-                      }
-                  }
-
-                  
-
-              }
-
-              //export{useKeyboard}; 
 
 
               });

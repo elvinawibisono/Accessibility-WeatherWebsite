@@ -59,89 +59,86 @@
                   </div>
           
                 </div>
+                
 
                 <!--Flex Box Right Side-->
 
-                <div class="col-md-4 col-lg-6 col-xl-8">
-          
-                  <div class="card" style="color: #4B515D; border-radius: 35px;">
-                    <div class="card-body p-4">
-          
-                      <div class="d-flex flex-column justify-content-start align-items-start mb-3">
-                        <span class="small" style="font-size: 14px; color: #1C2331;"> {{date_today}}</span>
-                        <span class="display-4 font-weight-bold" style="color: #1C2331;">{{time_now}}</span>
-                        
-                        <div class="d-flex flex-column justify-content-start align-items-center mt-5">
-                          <div class="d-flex flex-row justify-content-center align-items-start">
-                            <div class="d-flex flex-column align-items-center mr-2 border">
-                              <h6 class="mb-0">{{first_hour}}</h6>
-                              <img src="static/images/icons/n{{first_icon}}.png"
-                                width="50px">
-                              <span>{{first_temp}}°{{unit_symbol}}</span>
-                            </div>
-                            <div class="d-flex flex-column align-items-center mr-2 border">
-                              <h6 class="mb-0">{{second_hour}}</h6>
-                              <img src="static/images/icons/n{{second_icon}}.png"
-                                width="50px">
-                              <span>{{second_temp}}°{{unit_symbol}}</span>
-                            </div>
-                          </div>
-                          <div class="d-flex flex-row justify-content-center align-items-center mt-2">
-                            <div class="d-flex flex-column align-items-center border">
-                              <h6 class="mb-0">{{third_hour}}</h6>
-                              <img src="static/images/icons/n{{third_icon}}.png"
-                                width="50px">
-                              <span>{{third_temp}}°{{unit_symbol}}</span>
-                                
-                            </div>
-                          </div>
-                        </div>
-                      </div> 
-          
-                    </div>
-                  </div>
-          
-                </div>
 
-              </div>
-              
-              <!-- Flex Box Below -->
-              <div class="row d-flex justify-content-center align-items-center h-200" style="padding-top: 2rem;">
-                <div class="col-md-6 col-lg-8 col-xl-12">
+
+                <div class="col-md-8 col-lg-6 col-xl-4">
           
                   <div class="card" style="color: #4B515D; border-radius: 35px;">
                     <div class="card-body p-4">
           
                       <div class="d-flex">
-                        <h6 class="font-weight-bold mb-0 mr-4 ml-auto " style="color: #1C2331; font-size: 5rem;"> {{temperature}}°{{unit_symbol}} </h6>
+                        <h6 class="flex-grow-1">{{city}},{{country}}</h6>
                         <h6>{{date_today}}</h6>
                       </div>
           
                       <div class="d-flex flex-column text-center mt-5 mb-4">
-                        <h6 class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> {{temperature}}°{{unit_symbol}} </h6>
-                        <span class="small" style="color: #868B94">{{weather_main}}</span>
+                        <h6 class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> {{time_now}} </h6>
+                        <!-- <span class="small" style="color: #868B94">{{weather_main}}</span> -->
                       </div>
           
                       <div class="d-flex align-items-center">
                         <div class="flex-grow-1" style="font-size: 1rem;">
-                          <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 40 km/h
+                          <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1"> Weather: {{weather_desc}}
                             </span></div>
-                          <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84% </span>
+                          <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> Precipitation: {{prob_percip}}%</span>
                           </div>
-                          <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h </span>
+                          <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> UV Index : {{uv}}</span>
                           </div>
+                          
+                          
                         </div>
                         <div>
-                          <img src="https://openweathermap.org/img/w/{{weather_icon}}.png"
-                            width="100px">
+                          <img src="static/images/icons/n{{weather_icon}}.png"
+                            width="150px">
                         </div>
+                        
                       </div>
           
                     </div>
                   </div>
           
                 </div>
-              </div>
+                <div class="col-md-8 col-lg-6 col-xl-4">
+          
+                  <div class="card" style="color: #4B515D; border-radius: 35px;">
+                    <div class="card-body p-4">
+          
+                      <div class="d-flex">
+                        <h5 class="flex-grow-1 text-center">Recommendation</h6>
+                      
+                      </div>
+          
+                      <div class="d-flex flex-column text-start mt-5 mb-3">
+                        <h6 class="display-1: 14px mb-0 font-weight-bold" style="color: #1C2331;"> Clothing : {{clothing}} </h6>
+                        <span class="small" style="color: #868B94">{{clothing_comment}}</span>
+                      </div>
+          
+                      <div class="d-flex align-items-start">
+                        <div class="flex-grow-1" style="font-size: 1rem;">
+                          <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1"> Comment: {{comment}}
+                            </span></div>
+                            <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> UV Status: {{uv_status}}</span>
+                            </div>
+                         
+                          
+                        </div>
+                      
+                      </div>
+          
+                    </div>
+                  </div>
+          
+                </div>
+                
+
+
+          
+
+                
           
             </div>
           
@@ -154,11 +151,10 @@
             <form action="/action_page.php" class="form-container">
               <h1>Accessibility Features</h1>
   
-              <button id="Contrast" type="button" class = "btn" >Contrast</button>
-              <button id="Keyboard" type="button" class = "btn" >Keyboard</button>
-              <button id="Magnification" type="button" class = "btn" onclick="magnifier()">Magnification</button>
-              <button id="accessibility-toggle" type="button" class = "btn" onclick="textToSpeech()">Text-To-Speech</button>
-              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+              <button aria-label="One Click" id="One Click" type="button" class = "btn" onclick ="keyboard()" >One Click</button>
+            <button aria-label= "Magnification" id="Magnification" type="button" class = "btn" onclick="magnifier()">Magnification</button>
+            <button aria-label = "Text-To-Speech" id="accessibility-toggle" type="button" class = "btn" onclick="textToSpeech()">Text-To-Speech</button>
+            <button aria-label ="Close" id= "Close" type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
           </div>
   
@@ -170,8 +166,22 @@
             
             function closeForm() {
               document.getElementById("myForm").style.display = "none";
+  
+              const closeButton = document.getElementById("close-button");
+              // add a click event listener to the close button
+              closeButton.addEventListener("click", function() {
+                // disable accessibility mode
+                document.getElementById("accessibility-toggle").checked = false;
+                // remove highlight styles from all elements
+                speechSynthesis.cancel();
+                const highlightedElements = document.querySelectorAll(".highlight");
+                highlightedElements.forEach(function(element) {
+                  element.classList.remove("highlight");
+                });
+              });
+  
             }
-            
+  
               // text to speech 
             function textToSpeech(){
   
@@ -211,9 +221,10 @@
                 }
   
   
-                  $(document).on("change", "select", function() {
+                  $(document).on("change", "select", function(e) {
                       if (isAccessibilityOn) {
                           speakText($(this), $(this).find("option:selected").text());
+                          e.stopImmediatePropagation();
                       }
                   });
   
@@ -235,15 +246,19 @@
                           var $highlighted = $(".accessibility-highlight:hover");
                           if ($highlighted.length > 0) {
                               speakText($highlighted);
+                              e.stopImmediatePropagation();
+                              e.stopPropagation(); 
+                              e.preventDefault(); 
                           }
                       }
                   });
   
-                  $("#accessibility-toggle").on("click", function() {
+                  $("#accessibility-toggle").on("click", function(e) {
                       isAccessibilityOn = !isAccessibilityOn;
                       if (isAccessibilityOn) {
                         speakText($(this), "Accessibility mode turned on. Hover over a text or image element and press space to read it.", function() {
-                        highlightElement($(".accessibility-highlight"));
+                          e.stopImmediatePropagation();
+                          highlightElement($(".accessibility-highlight"));
                         });
                       } else {
                         speechSynthesis.cancel();
@@ -258,17 +273,16 @@
               });
               
             }
-
-            // Debug this
-              // magnification
+  
+            // magnification
             function magnifier(){
-
+  
               $(document).ready(function(){
-
+  
                 var zoom = 1.0; 
                 var body_width = document.body.clientWidth; 
                 var body_height = document.body.clientHeight; 
-
+  
                 document.addEventListener('keydown', function(e){
                     
                     //Browser Zoom 
@@ -281,127 +295,124 @@
                         zoom += 0.1; //change it to string
                         zoomString = zoom.toFixed(1).toString(); 
                         document.body.style.zoom = zoomString; 
-
+  
                     }
-
+  
                     if (e.key == "+" || e.key == "_"){
                         $("body").css("position","relative");
                         //Graphical Zoom
                         if (e.key == "+"){
                             zoom += 0.1; 
-
+  
                         }
                         else if(e.key == "_"){
                             zoom -= 0.1; 
-
+  
                         }
                         var newWidth = zoom.toFixed(1) * body_width; 
                         var newHeight = zoom.toFixed(1) * body_height; 
-
+  
                         var pixel_width = (newWidth-body_width)/2; 
                         var pixel_height = (newHeight-body_height)/2; 
                         $("body").css("left", pixel_width.toString() + "px"); 
                         $("body").css("top", pixel_height.toString() + "px"); 
                         $("body").css("transform", 'scale(${zoom.toFixed(1)}'); 
-
+  
                         if(zoom.toFixed()==1.0){
                             $("body").css("transform", "");
                         }
-
-
+  
                     } 
-
+  
                 });
-
-
+  
+  
                 var oldx = 0; 
                 var oldy = 0; 
-
+  
                 document.addEventListener('mousemove', e=>{
-
+  
                     var x= e.clientX
                     var scrollLeftValue = $(document).scrollLeft(); 
-
+  
                     // if the coo relative to the window seem are less than 100px
                     //and if the coo of the old move are grater than the coo of the new move
                     // and if the coo relative to the window are not equal to coo of the move
-
+  
                     if((x<=100) & (oldx>e.pageX) &(x !=e.pageX)){
                         $(document).scrollLeft(scrollLeftValue -10); 
-
+  
                     }
-
+  
                     //if the window width minus the coo relative to the window are less than 100 
                     // and if the coo of the old moce are less than the coo of new move
                     //scroll other way 
                     if(($(window).width() -x) <100 & (oldx <e.pageX)){
                         $(document).scrollLeft(scrollLeftValue +10);
                     }
-
+  
                     oldx = e.pageX
                     oldy = e.pageY
-
+  
                 }); 
-
-
+  
+  
                 $("*:not(body)").on("mouseenter", function(ev){
-
+  
                     //may want to remove leftover highlights vefore highlighting a new 
                     $(".highlight").removeClass("highlight")
                     //when a mouse enters an element
                     $(this).addClass("highlight")
-
+  
                     //to prevent multiple elements from being highlighted 
                     //we will only highlight the first element so we need to call the following
                     //to stop hovering on a child from highloghting the parent
                     ev.stopPropagation(); 
-
+  
                     //set the element variable
                     element = this; 
                 });
-
+  
                 $("*:not(body)").on("mouseleave", function(ev){
                     $(this).removeClass("highlight"); 
-
+  
                     $(".highlight").removeClass("highlight")
-
+  
                 });
-
+  
                 document.addEventListener("keydown", function(e){
-
+  
                     if(e.code == ""|| e.code == "Space"){
                         //need to stop the page from scrolling down when we press space
                         if(e.stopPropagation){
                             e.stopPropagation(); 
                             e.preventDefault(); 
                         }
-
+  
                         //if text is highighted and there is no refactored window open 
                         //make a refactored window
                         //otherwise the window is open so close it
-
+  
                         //check if div exist
                         if($(element).hasClass("highlight") & $('#mydiv').length == 0){
                             //var newImage = new Image(); 
-
+  
                             $("body").append($("<div id = 'mydiv'></div>"))
-
-
+  
+  
                             var imgsrc = $(element).attr("src"); 
                             var imgalt = $(element).attr("alt"); 
-
+  
                             if($(element).attr("alt") && $(element).attr("src")){
                                 
-
+  
                                 $('#mydiv').append($("<img class = 'magnified' alt=" + imgalt + " src=" + imgsrc+">")); 
                                 $('.magnified').css({'width': '100%', 'height': '100%'})
                                 $('.magnified').css('object-fit', 'contain'); 
                                 $('#mydiv').css('height', '75%')
-
-
-
+  
                             }
-
+  
                             else if($(element).attr("src")){
                                 $('#mydiv').append($("<img class = 'magnified' src =" + imgsrc+">")); 
                         
@@ -409,7 +420,7 @@
                                 $('.magnified').css('object-fit', 'contain'); 
                                 $('#mydiv').css('height', '75%')
                             }
-
+  
                             //else the element is not an image and it's stext 
                             else{
                                 //write the text to the div
@@ -420,27 +431,136 @@
                                 $('#mydiv').css('border', '1px solid black')
                                 $('mydiv').css('padding', "25px")
                             }
-
-
+  
+  
                         }
                         //else remove 
                         else{
                             $("#mydiv").html("")
                             $("#mydiv").remove()
-
+  
                         }
                     }
                     else{
                         $(".highlight").removeClass("highlight")
                     }
                 });
-
-
-
+  
+  
+  
               });
-
-
-              }
+  
+              
+              
+            }
+  
+  
+            function keyboard(){
+  
+              $(document).ready(function(){
+  
+                var state = "none";
+                var x = 0; 
+                var y = 0;
+  
+  
+                var inputBox;
+                var upperCase; 
+                var shift; 
+                var keyScan; 
+  
+  
+                $("body").append("<div id = linex class = 'linex'></div>"); 
+                $("body").append("<div id = liney class = 'liney'></div>"); 
+                //$('button.down').show(); 
+  
+                //trigger a click using the scan bars 
+  
+                function simulateClick(element){
+                    if(!element) return; 
+                    var dispatchEvent = function(elt, name){
+                        var clickEvent = document.createEvent('MouseEvents')
+                        clickEvent.initEvent(name, true, true); 
+                        elt.dispatchEvent(clickEvent); 
+                    }; 
+                    dispatchEvent(element, 'mouseover')
+                    dispatchEvent(element, 'mousedown')
+                    dispatchEvent(element, 'click')
+                    dispatchEvent(element, 'mouseup')
+                }; 
+  
+                //scan bars to select item on page 
+  
+                setInterval(function(){
+                    paint();      
+                    
+                }, 10); 
+  
+                function paint(){
+                    if(state == "horizontal_scanning"){
+  
+                        document.getElementById("linex").style.width = (x + "px"); 
+                        x = x + 1; 
+  
+                    }else if(state == "vertical_scanning"){
+                    
+                        document.getElementById("liney").style.height = (y + "px"); 
+                        y = y + 1
+                
+                    }else{
+  
+                        //do nothing
+  
+                    }
+                }
+  
+                $(document).keydown(function(e){
+                    if(e.key == " "){
+  
+                        keyScan = true; 
+  
+                        if (state == 'none'){
+                            state = "horizontal_scanning";
+  
+                        }
+                        else if (state == "horizontal_scanning"){
+                            state = "vertical_scanning"
+  
+                        }
+                        else {
+                    
+                          document.getElementById("linex").style.width = ("0px");
+                          document.getElementById("liney").style.height = ("0px");
+                          var click = document.elementFromPoint(x,y); 
+                          simulateClick(click); 
+  
+                          state = "none";
+                          x = 0; 
+                          y = 0; 
+  
+                        } 
+  
+                        //
+  
+                        e.stopPropagation(); 
+                        e.preventDefault(); 
+  
+                        
+                        return false; 
+  
+                        
+                    }
+  
+  
+                });
+  
+  
+  
+                });
+  
+  
+  
+            }
   
           </script>
 
